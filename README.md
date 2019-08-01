@@ -25,7 +25,7 @@ Simple bash script (and systemd service) to automatically reconnect the serial c
 
     ```shell
     ln -s /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect /usr/local/bin/octoprint_usb_autoconnect
-    ln -s /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.service /etc/systemd/system/octoprint_usb_autoconnect.service
+    ln -s /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect\@.service /etc/systemd/system/octoprint_usb_autoconnect\@.service
     ```
 
 4. Create the `udev` USB hook:
@@ -35,7 +35,9 @@ Simple bash script (and systemd service) to automatically reconnect the serial c
     ```
 
     ```
-    ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0403", ATTR{idProduct}=="6001", TAG+="systemd", ENV{SYSTEMD_WANTS}="octoprint_usb_autoconnect.service"
+    ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0403", ATTR{idProduct}=="6001", TAG+="systemd", ENV{SYSTEMD_WANTS}="octoprint_usb_autoconnect@connect.service"
+    ACTION=="remove", SUBSYSTEM=="usb", ATTR{idVendor}=="0403", ATTR{idProduct}=="6001", TAG+="systemd", ENV{SYSTEMD_WANTS}="octoprint_usb_autoconnect@disconnect.service"
+
     ```
 
     (Please note that the hook above is for an Creality Ender-3, if you have a different printer you can use `lsusb` and `lsusb -vs 00X:00Y` to find the proper `idVendor` and `idProduct` numbers. See "[Find out idVendor / idProduct](#find-out-idvendor--idproduct)" for more more detailed guide.)

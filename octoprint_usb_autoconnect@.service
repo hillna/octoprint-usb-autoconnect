@@ -1,0 +1,8 @@
+[Unit]
+Description=OctoPrint USB auto connect
+
+[Service]
+Type=oneshot
+RemainAfterExit=no
+Environment="SCRIPT_ARGS=%I"
+ExecStart=/usr/local/bin/octoprint_usb_autoconnect $SCRIPT_ARGS

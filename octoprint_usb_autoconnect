@@ -6,8 +6,16 @@ if [ ! -f ${CONFIGFILE} ]; then
     exit 1
 fi
 
+if [ $1 == "connect" ]; then
+    COMMAND='{"command":"connect"}'
+elif [ $1 == "disconnect" ]; then
+    COMMAND='{"command":"disconnect"}'
+else
+    echo "Invalid command. [connect|disconnect]"
+fi
+
 # Load config file
 . ${CONFIGFILE}
 
 # Send POST request to reconnect serial connection
-curl -siL -X POST -H "Content-Type: application/json" -H "X-Api-Key: ${APIKEY}" ${OCTOHOST}/api/connection -d '{"command":"connect"}'
+curl -siL -X POST -H "Content-Type: application/json" -H "X-Api-Key: ${APIKEY}" ${OCTOHOST}/api/connection -d ${COMMAND}
